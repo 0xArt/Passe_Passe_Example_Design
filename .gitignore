@@ -1,0 +1,13 @@
+*
+!*/
+!*.*
+**/presynth/*
+**/vsim.wlf
+*.ini
+*.csv
+*.jou
+*.log
+*.str
+project/*
+.Xil/*
+*.debug
