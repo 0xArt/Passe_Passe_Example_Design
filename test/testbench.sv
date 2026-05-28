@@ -225,7 +225,6 @@ endfunction
 assign passe_passe_example_top_clock_p                              = clock;
 assign passe_passe_example_top_clock_n                              = !clock;
 assign passe_passe_example_top_reset_button                         = !reset_n;
-assign passe_passe_example_top_uart_serial_receive                  = 0;
 assign passe_passe_example_top_rgmii_phy_receive_data[0]            = rgmii_data_0;
 assign passe_passe_example_top_rgmii_phy_receive_data_control[0]    = rgmii_data_control_0;
 assign passe_passe_example_top_rgmii_phy_receive_clock[0]           = rgmii_clock_0;
