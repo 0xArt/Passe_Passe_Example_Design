@@ -61,13 +61,11 @@ logic [7:0] ethernet_message_1 [0:1500];
 
 wire                                        passe_passe_example_top_clock;
 wire                                        passe_passe_example_top_reset_button;
-wire                                        passe_passe_example_top_uart_serial_receive;
 wire    [NUMBER_OF_RGMII_PORTS-1:0][3:0]    passe_passe_example_top_rgmii_phy_receive_data;
 wire    [NUMBER_OF_RGMII_PORTS-1:0]         passe_passe_example_top_rgmii_phy_receive_data_control;
 wire    [NUMBER_OF_RGMII_PORTS-1:0]         passe_passe_example_top_rgmii_phy_receive_clock;
 logic                                       passe_passe_example_top_udp_test_button;
 
-wire                                        passe_passe_example_top_uart_serial_transmit;
 wire    [NUMBER_OF_RGMII_PORTS-1:0][3:0]    passe_passe_example_top_rgmii_phy_transmit_data;
 wire    [NUMBER_OF_RGMII_PORTS-1:0]         passe_passe_example_top_rgmii_phy_transmit_data_control;
 wire    [NUMBER_OF_RGMII_PORTS-1:0]         passe_passe_example_top_rgmii_phy_transmit_data_clock;
@@ -79,13 +77,11 @@ passe_passe_example_top #(
     .system_clock_p                 (passe_passe_example_top_clock_p),
     .system_clock_n                 (passe_passe_example_top_clock_n),
     .reset_button                   (passe_passe_example_top_reset_button),
-    .uart_serial_receive            (passe_passe_example_top_uart_serial_receive),
     .rgmii_phy_receive_data         (passe_passe_example_top_rgmii_phy_receive_data),
     .rgmii_phy_receive_data_control (passe_passe_example_top_rgmii_phy_receive_data_control),
     .rgmii_phy_receive_clock        (passe_passe_example_top_rgmii_phy_receive_clock),
     .udp_test_button                (passe_passe_example_top_udp_test_button),
 
-    .uart_serial_transmit           (passe_passe_example_top_uart_serial_transmit),
     .rgmii_phy_transmit_data        (passe_passe_example_top_rgmii_phy_transmit_data),
     .rgmii_phy_transmit_data_control(passe_passe_example_top_rgmii_phy_transmit_data_control),
     .rgmii_phy_transmit_clock       (passe_passe_example_top_rgmii_phy_transmit_data_clock)

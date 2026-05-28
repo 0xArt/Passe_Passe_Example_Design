@@ -29,7 +29,7 @@ add_files -fileset sim_1 ./test/testbench.sv
 add_files -fileset sim_1 ./test/case_000/case_000.svh
 add_files -fileset sim_1 ./test/case_001/case_001.svh
 add_files -fileset sim_1 ./test/case_002/case_002.svh
-add_files -fileset sim_1 ./test/case_002/case_003.svh
+add_files -fileset sim_1 ./test/case_003/case_003.svh
 import_ip ./vivado_ip/power_on_reset.xci
 generate_target all [get_files *power_on_reset.xci]
 import_ip ./vivado_ip/rgmii_pll_clock_wiz.xci
