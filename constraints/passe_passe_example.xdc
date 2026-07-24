@@ -63,9 +63,9 @@ create_clock -period 8.000 -name rgmii_transmit_clock -waveform {0.000 4.000} -a
 set_clock_uncertainty -setup $rgmii_clock_uncertainty [get_clocks rgmii_transmit_clock]
 set_clock_uncertainty -hold $uncertainty_hold [get_clocks rgmii_transmit_clock]
 
-set system_clock_uncertainty [expr 4 - ( 4 - $uncertainty_jitter) / ($uncertainty_multiplier)]
+set system_clock_uncertainty [expr 10 - ( 10 - $uncertainty_jitter) / ($uncertainty_multiplier)]
 
-create_clock -period 4.000 -name system_clock -waveform {0.000 2.000} -add [get_pins main_system_clock_wiz/clk_out1]
+create_clock -period 10.000 -name system_clock -waveform {0.000 5.000} -add [get_pins main_system_clock_wiz/clk_out1]
 set_clock_uncertainty -setup $system_clock_uncertainty [get_clocks system_clock]
 set_clock_uncertainty -hold $uncertainty_hold [get_clocks system_clock]
 

@@ -59,7 +59,7 @@ module passe_passe_example_top #(
 
 localparam  NUMBER_OF_RMII_PORTS        = 0;
 localparam  NUMBER_OF_VIRTUAL_PORTS     = 1;
-localparam  RECEIVE_QUE_SLOTS           = 4;
+localparam  RECEIVE_QUEUE_SLOTS         = 4;
 localparam  TECHNOLOGY                  = "ULTRASCALE";
 localparam  ENABLE_RGMII_0_IDELAY       = 0;
 localparam  ENABLE_RGMII_1_IDELAY       = 0;
@@ -305,9 +305,11 @@ switch_core #(
     .NUMBER_OF_RMII_PORTS           (NUMBER_OF_RMII_PORTS),
     .NUMBER_OF_RGMII_PORTS          (NUMBER_OF_RGMII_PORTS),
     .NUMBER_OF_VIRTUAL_PORTS        (NUMBER_OF_VIRTUAL_PORTS),
-    .RECEIVE_QUE_SLOTS              (RECEIVE_QUE_SLOTS),
+    .RECEIVE_QUEUE_SLOTS            (RECEIVE_QUEUE_SLOTS),
     .TECHNOLOGY                     (TECHNOLOGY),
-    .PHASE_SHIFT_TX_CLOCK_ENABLE    (0)
+    .PHASE_SHIFT_TX_CLOCK_ENABLE    (0),
+    .FABRIC_DATA_BYTES              (4),
+    .CORE_CLOCK_FREQUENCY           (100_000_000)
 )
 switch_core(
     .clock                              (switch_core_clock),
@@ -407,7 +409,7 @@ wire marvell_88E151x_reset_controller_reset_request;
 wire marvell_88E151x_reset_controller_reset;
 
 marvell_88E151x_reset_controller #(
-    .CLOCK_FREQUENCY            (250_000_000),
+    .CLOCK_FREQUENCY            (100_000_000),
     .SIMULATION                 (SIMULATION)
 )marvell_88E151x_reset_controller(
     .clock          (marvell_88E151x_reset_controller_clock),

@@ -48,7 +48,7 @@ testbench.ethernet_message_0[1021]  = 8'hFA;
 testbench.ethernet_message_0[1022]  = 8'h72;
 testbench.ethernet_message_0[1023]  = 8'h5E;
 
-force testbench.passe_passe_example_top.switch_core.genblk2[0].virutal_port_udp.switch_inbound_fifo.full = 0;
+force testbench.passe_passe_example_top.switch_core.genblk2[0].virtual_port_udp.switch_inbound_fifo.full = 0;
 
 fork : f0
     begin
@@ -130,7 +130,7 @@ fork : f0
         while (1) begin
             //check for packet drop state
             @(posedge testbench.passe_passe_example_top.switch_core.genblk3[0].rgmii_port.ethernet_packet_parser.clock)
-            if (testbench.passe_passe_example_top.switch_core.genblk3[0].rgmii_port.ethernet_packet_parser.state == 4) begin
+            if (testbench.passe_passe_example_top.switch_core.genblk3[0].rgmii_port.ethernet_packet_parser.state == testbench.passe_passe_example_top.switch_core.genblk3[0].rgmii_port.ethernet_packet_parser.S_DROP) begin
                 $display("Port 0 parser dropped a packet!\n");
                 $fatal(0);
                 disable f0;
