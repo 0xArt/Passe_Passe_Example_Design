@@ -11,3 +11,5 @@
 project/*
 .Xil/*
 *.debug
+# submodule gitlink (no dot in name, so the "*" rule above would ignore it)
+!rtl/submodules/Passe_Passe_Network_Switch

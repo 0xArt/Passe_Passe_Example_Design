@@ -1,1 +1,3 @@
-
+[submodule "Passe_Passe_Network_Switch"]
+	path = rtl/submodules/Passe_Passe_Network_Switch
+	url = https://github.com/0xArt/Passe_Passe_Network_Switch.git
