@@ -48,7 +48,7 @@ testbench.ethernet_message_0[1021]  = 8'hFA;
 testbench.ethernet_message_0[1022]  = 8'h72;
 testbench.ethernet_message_0[1023]  = 8'h5E;
 
-force testbench.passe_passe_example_top.switch_core.genblk2[0].virutal_port_udp.switch_inbound_fifo.full = 0;
+force testbench.passe_passe_example_top.switch_core.genblk2[0].virtual_port_udp.switch_inbound_fifo.full = 0;
 
 fork : f0
     begin

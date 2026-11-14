@@ -61,8 +61,8 @@ localparam  NUMBER_OF_RMII_PORTS        = 0;
 localparam  NUMBER_OF_VIRTUAL_PORTS     = 1;
 localparam  RECEIVE_QUEUE_SLOTS         = 4;
 localparam  TECHNOLOGY                  = "ULTRASCALE";
-localparam  ENABLE_RGMII_0_IDELAY       = 0;
-localparam  ENABLE_RGMII_1_IDELAY       = 0;
+localparam  ENABLE_RGMII_0_IDELAY       = 1;
+localparam  ENABLE_RGMII_1_IDELAY       = 1;
 localparam  ENABLE_RGMII_0_ODELAY       = 0;
 localparam  ENABLE_RGMII_1_ODELAY       = 0;
 
@@ -164,12 +164,47 @@ reset_synchronizer reset_synchronizer_rgmii_transmit(
 );
 
 
+wire reset_synchronizer_delay_clock;
+wire reset_synchronizer_delay_async_reset_n;
+
+wire reset_synchronizer_delay_sync_reset_n;
+
+reset_synchronizer reset_synchronizer_delay(
+    .clock          (reset_synchronizer_delay_clock),
+    .async_reset_n  (reset_synchronizer_delay_async_reset_n),
+
+    .sync_reset_n   (reset_synchronizer_delay_sync_reset_n)
+);
+
+
+wire phy_delay_ready_synchronizer_clock;
+wire phy_delay_ready_synchronizer_reset_n;
+wire phy_delay_ready_synchronizer_source_signal;
+
+wire phy_delay_ready_synchronizer_destination_signal;
+wire phy_delay_ready_synchronizer_destination_signal_valid;
+
+variable_stage_synchronizer #(
+    .DATA_WIDTH (1)
+) phy_delay_ready_synchronizer (
+    .clock                      (phy_delay_ready_synchronizer_clock),
+    .reset_n                    (phy_delay_ready_synchronizer_reset_n),
+    .source_signal              (phy_delay_ready_synchronizer_source_signal),
+
+    .destination_signal         (phy_delay_ready_synchronizer_destination_signal),
+    .destination_signal_valid   (phy_delay_ready_synchronizer_destination_signal_valid)
+);
+
+
 wire rgmii_odelay3_clock;
 wire rgmii_odelay3_reset_n;
 wire rgmii_0_odelay3_ready;
 wire rgmii_1_odelay3_ready;
 wire rgmii_0_idelay3_ready;
 wire rgmii_1_idelay3_ready;
+
+
+wire rgmii_rx_delay_ready;
 
 
 generate
@@ -183,7 +218,7 @@ generate
                 .DATA_3_DELAY       (4),
                 .DATA_CONTROL_DELAY (1),
                 .FORMAT             ("COUNT"),
-                .REFCLK_FREQUENCY   (300.3)
+                .REFCLK_FREQUENCY   (300.0)
             )rgmii_0_odelay3(
                 .clock                      (rgmii_odelay3_clock),
                 .reset_n                    (rgmii_odelay3_reset_n),
@@ -207,7 +242,7 @@ generate
                 .DATA_3_DELAY       (1),
                 .DATA_CONTROL_DELAY (1),
                 .FORMAT             ("COUNT"),
-                .REFCLK_FREQUENCY   (300.3)
+                .REFCLK_FREQUENCY   (300.0)
             )rgmii_1_odelay3(
                 .clock                      (rgmii_odelay3_clock),
                 .reset_n                    (rgmii_odelay3_reset_n),
@@ -224,13 +259,13 @@ generate
 
         if (ENABLE_RGMII_0_IDELAY) begin
             rgmii_idelay3 #(
-                .DATA_0_DELAY       (10),
-                .DATA_1_DELAY       (8),
-                .DATA_2_DELAY       (8),
-                .DATA_3_DELAY       (12),
-                .DATA_CONTROL_DELAY (10),
-                .FORMAT             ("COUNT"),
-                .REFCLK_FREQUENCY   (300.3)
+                .DATA_0_DELAY       (788),
+                .DATA_1_DELAY       (780),
+                .DATA_2_DELAY       (788),
+                .DATA_3_DELAY       (802),
+                .DATA_CONTROL_DELAY (787),
+                .FORMAT             ("TIME"),
+                .REFCLK_FREQUENCY   (300.0)
             )rgmii_0_idelay3(
                 .clock                      (rgmii_odelay3_clock),
                 .reset_n                    (rgmii_odelay3_reset_n),
@@ -245,13 +280,15 @@ generate
 
         if (ENABLE_RGMII_1_IDELAY) begin
             rgmii_idelay3 #(
-                .DATA_0_DELAY       (11),
-                .DATA_1_DELAY       (7),
-                .DATA_2_DELAY       (11),
-                .DATA_3_DELAY       (7),
-                .DATA_CONTROL_DELAY (15),
-                .FORMAT             ("COUNT"),
-                .REFCLK_FREQUENCY   (300.3)
+                .DATA_0_DELAY       (999),
+                .DATA_1_DELAY       (997),
+                .DATA_2_DELAY       (1004),
+                .DATA_3_DELAY       (1001),
+                .DATA_CONTROL_DELAY (1012),
+                .FORMAT             ("TIME"),
+                .REFCLK_FREQUENCY   (300.0),
+                .IDELAYCTRL_ENABLE  (0),
+                .CASCADE_ENABLE     (1)
             )rgmii_1_idelay3(
                 .clock                      (rgmii_odelay3_clock),
                 .reset_n                    (rgmii_odelay3_reset_n),
@@ -475,7 +512,7 @@ assign udp_test_module_udp_destination                  = 16'h8888;
 
 assign marvell_88E151x_reset_controller_clock           = clock;
 assign marvell_88E151x_reset_controller_reset_n         = reset_synchronizer_system_sync_reset_n;
-assign marvell_88E151x_reset_controller_reset_request   = 0;
+assign marvell_88E151x_reset_controller_reset_request   = !phy_delay_ready_synchronizer_destination_signal;
 
 
 assign rate_limited_debouncer_clock                     = clock;
@@ -483,7 +520,7 @@ assign rate_limited_debouncer_reset_n                   = reset_synchronizer_sys
 assign rate_limited_debouncer_enable                    = udp_test_button;
 
 assign rgmii_odelay3_clock                              = delay_reference_clock;
-assign rgmii_odelay3_reset_n                            = !power_on_reset_peripheral_aresetn;
+assign rgmii_odelay3_reset_n                            = reset_synchronizer_delay_sync_reset_n;
 
 assign ethernet_heartbeat_clock                         = clock;
 assign ethernet_heartbeat_reset_n                       = reset_synchronizer_system_sync_reset_n;
@@ -513,14 +550,19 @@ generate
     end
 endgenerate
 
+
 assign rgmii_phy_reset_n                                = {NUMBER_OF_RGMII_PORTS{!marvell_88E151x_reset_controller_reset}};
 
 assign vadj_level                                       = 2'b11;
 assign vadj_auton                                       = 1;
 
+assign rgmii_rx_delay_ready                             = (SIMULATION) ? 1'b1 :
+                                                          ((ENABLE_RGMII_0_IDELAY ? rgmii_0_idelay3_ready : 1'b1) &
+                                                           (ENABLE_RGMII_1_IDELAY ? rgmii_1_idelay3_ready : 1'b1));
+
 assign system_heartbeat_led                             = main_system_clock_wiz_locked;
 assign ethernet_heartbeat_led                           = ethernet_heartbeat_status;
-assign led                                              = rgmii_0_odelay3_ready;
+assign led                                              = rgmii_rx_delay_ready;
 assign system_clock_enable                              = 1'b1;
 
 assign reset_synchronizer_system_clock                  = clock;
@@ -534,5 +576,12 @@ assign reset_synchronizer_rgmii_1_async_reset_n         = power_on_reset_periphe
 
 assign reset_synchronizer_rgmii_transmit_clock          = rgmii_transmit_clock_125;
 assign reset_synchronizer_rgmii_transmit_async_reset_n  = power_on_reset_peripheral_aresetn;
+
+assign reset_synchronizer_delay_clock                   = delay_reference_clock;
+assign reset_synchronizer_delay_async_reset_n           = power_on_reset_peripheral_aresetn;
+
+assign phy_delay_ready_synchronizer_clock               = clock;
+assign phy_delay_ready_synchronizer_reset_n             = reset_synchronizer_system_sync_reset_n;
+assign phy_delay_ready_synchronizer_source_signal       = rgmii_rx_delay_ready;
 
 endmodule
