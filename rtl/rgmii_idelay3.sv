@@ -80,7 +80,6 @@ generate
 endgenerate
 
 
-localparam integer MAX_SINGLE_DELAY = (FORMAT == "TIME") ? 1100 : 511;
 
 function automatic integer lane_delay(input integer lane);
     case (lane)
@@ -100,8 +99,10 @@ genvar i;
 generate
     for (i = 0; i < 5; i = i + 1) begin : lane
         localparam integer TOTAL_DELAY  = lane_delay(i);
-        localparam integer IDELAY_VALUE = (CASCADE_ENABLE && (TOTAL_DELAY > MAX_SINGLE_DELAY)) ? MAX_SINGLE_DELAY : TOTAL_DELAY;
-        localparam integer ODELAY_VALUE = TOTAL_DELAY - IDELAY_VALUE;
+        //a cascaded IDELAYE3/ODELAYE3 pair in FIXED TIME mode shares a bitslice and must use the
+        //same DELAY_VALUE (DRC PDRC-184), so the total is split evenly between the two
+        localparam integer IDELAY_VALUE = (CASCADE_ENABLE) ? ((TOTAL_DELAY + 1) / 2) : TOTAL_DELAY;
+        localparam integer ODELAY_VALUE = IDELAY_VALUE;
 
         wire cascade_out;
         wire cascade_return;

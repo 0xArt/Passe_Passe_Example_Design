@@ -41,6 +41,8 @@ set_property -dict {PACKAGE_PIN K8 IOSTANDARD LVCMOS18} [get_ports {rgmii_phy_tr
 set_property -dict {PACKAGE_PIN T8 IOSTANDARD LVCMOS18} [get_ports {rgmii_phy_reset_n[1]}]
 set_property slew FAST [get_ports [list {rgmii_phy_transmit_data[*][*]}  {rgmii_phy_transmit_data_control[*]} {rgmii_phy_transmit_clock[*]}]]
 
+set_property UNAVAILABLE_DURING_CALIBRATION TRUE [get_ports {rgmii_phy_transmit_data[1][1]}]
+
 #////////////////////////////////////////////////////////////////////////////////
 # Clocking
 #////////////////////////////////////////////////////////////////////////////////
