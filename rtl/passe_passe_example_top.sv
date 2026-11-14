@@ -59,7 +59,7 @@ module passe_passe_example_top #(
 
 localparam  NUMBER_OF_RMII_PORTS        = 0;
 localparam  NUMBER_OF_VIRTUAL_PORTS     = 1;
-localparam  RECEIVE_QUE_SLOTS           = 4;
+localparam  RECEIVE_QUEUE_SLOTS         = 4;
 localparam  TECHNOLOGY                  = "ULTRASCALE";
 localparam  ENABLE_RGMII_0_IDELAY       = 0;
 localparam  ENABLE_RGMII_1_IDELAY       = 0;
@@ -305,8 +305,10 @@ switch_core #(
     .NUMBER_OF_RMII_PORTS           (NUMBER_OF_RMII_PORTS),
     .NUMBER_OF_RGMII_PORTS          (NUMBER_OF_RGMII_PORTS),
     .NUMBER_OF_VIRTUAL_PORTS        (NUMBER_OF_VIRTUAL_PORTS),
-    .RECEIVE_QUE_SLOTS              (RECEIVE_QUE_SLOTS),
+    .RECEIVE_QUEUE_SLOTS            (RECEIVE_QUEUE_SLOTS),
     .TECHNOLOGY                     (TECHNOLOGY),
+    .FABRIC_DATA_BYTES              (4),
+    .CORE_CLOCK_FREQUENCY           (62_500_000),
     .PHASE_SHIFT_TX_CLOCK_ENABLE    (0)
 )
 switch_core(

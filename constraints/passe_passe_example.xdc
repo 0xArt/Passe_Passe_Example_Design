@@ -63,9 +63,9 @@ create_clock -period 8.000 -name rgmii_transmit_clock -waveform {0.000 4.000} -a
 set_clock_uncertainty -setup $rgmii_clock_uncertainty [get_clocks rgmii_transmit_clock]
 set_clock_uncertainty -hold $uncertainty_hold [get_clocks rgmii_transmit_clock]
 
-set system_clock_uncertainty [expr 4 - ( 4 - $uncertainty_jitter) / ($uncertainty_multiplier)]
+set system_clock_uncertainty [expr 16 - ( 16 - $uncertainty_jitter) / ($uncertainty_multiplier)]
 
-create_clock -period 4.000 -name system_clock -waveform {0.000 2.000} -add [get_pins main_system_clock_wiz/clk_out1]
+create_clock -period 16.000 -name system_clock -waveform {0.000 8.000} -add [get_pins main_system_clock_wiz/clk_out1]
 set_clock_uncertainty -setup $system_clock_uncertainty [get_clocks system_clock]
 set_clock_uncertainty -hold $uncertainty_hold [get_clocks system_clock]
 
@@ -79,16 +79,16 @@ set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets {reset_synchronizer_rgmii_
 #////////////////////////////////////////////////////////////////////////////////
 # Input Delays
 #////////////////////////////////////////////////////////////////////////////////
+#set_input_delay -clock rgmii_0_rx_clock -max -add_delay 1.9 [get_ports {{rgmii_phy_receive_data[0][*]} {rgmii_phy_receive_data_control[0]}}]
+#set_input_delay -clock rgmii_0_rx_clock -min -add_delay 1.8 [get_ports {{rgmii_phy_receive_data[0][*]} {rgmii_phy_receive_data_control[0]}}]
+#set_input_delay -clock rgmii_0_rx_clock -clock_fall -max -add_delay 1.9 [get_ports {{rgmii_phy_receive_data[0][*]} {rgmii_phy_receive_data_control[0]}}]
+#set_input_delay -clock rgmii_0_rx_clock -clock_fall -min -add_delay 1.8 [get_ports {{rgmii_phy_receive_data[0][*]} {rgmii_phy_receive_data_control[0]}}]
 
-set_input_delay -clock rgmii_0_rx_clock -max -add_delay 1.9 [get_ports {{rgmii_phy_receive_data[0][*]} {rgmii_phy_receive_data_control[0]}}]
-set_input_delay -clock rgmii_0_rx_clock -min -add_delay 1.8 [get_ports {{rgmii_phy_receive_data[0][*]} {rgmii_phy_receive_data_control[0]}}]
-set_input_delay -clock rgmii_0_rx_clock -clock_fall -max -add_delay 1.9 [get_ports {{rgmii_phy_receive_data[0][*]} {rgmii_phy_receive_data_control[0]}}]
-set_input_delay -clock rgmii_0_rx_clock -clock_fall -min -add_delay 1.8 [get_ports {{rgmii_phy_receive_data[0][*]} {rgmii_phy_receive_data_control[0]}}]
+#set_input_delay -clock rgmii_1_rx_clock -max -add_delay 2.8 [get_ports {{rgmii_phy_receive_data[1][*]} {rgmii_phy_receive_data_control[1]}}]
+#set_input_delay -clock rgmii_1_rx_clock -min -add_delay 2.6 [get_ports {{rgmii_phy_receive_data[1][*]} {rgmii_phy_receive_data_control[1]}}]
+#set_input_delay -clock rgmii_1_rx_clock -clock_fall -max -add_delay 2.8 [get_ports {{rgmii_phy_receive_data[1][*]} {rgmii_phy_receive_data_control[1]}}]
+#set_input_delay -clock rgmii_1_rx_clock -clock_fall -min -add_delay 2.6 [get_ports {{rgmii_phy_receive_data[1][*]} {rgmii_phy_receive_data_control[1]}}]
 
-set_input_delay -clock rgmii_1_rx_clock -max -add_delay 2.8 [get_ports {{rgmii_phy_receive_data[1][*]} {rgmii_phy_receive_data_control[1]}}]
-set_input_delay -clock rgmii_1_rx_clock -min -add_delay 2.6 [get_ports {{rgmii_phy_receive_data[1][*]} {rgmii_phy_receive_data_control[1]}}]
-set_input_delay -clock rgmii_1_rx_clock -clock_fall -max -add_delay 2.8 [get_ports {{rgmii_phy_receive_data[1][*]} {rgmii_phy_receive_data_control[1]}}]
-set_input_delay -clock rgmii_1_rx_clock -clock_fall -min -add_delay 2.6 [get_ports {{rgmii_phy_receive_data[1][*]} {rgmii_phy_receive_data_control[1]}}]
 
 create_clock -name virtual_clk -period 10
 set_input_delay -max 2.0 -clock virtual_clk [get_ports reset_button]
