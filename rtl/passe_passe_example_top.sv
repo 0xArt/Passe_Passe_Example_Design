@@ -446,7 +446,7 @@ wire marvell_88E151x_reset_controller_reset_request;
 wire marvell_88E151x_reset_controller_reset;
 
 marvell_88E151x_reset_controller #(
-    .CLOCK_FREQUENCY            (250_000_000),
+    .CLOCK_FREQUENCY            (62_500_000),
     .SIMULATION                 (SIMULATION)
 )marvell_88E151x_reset_controller(
     .clock          (marvell_88E151x_reset_controller_clock),
